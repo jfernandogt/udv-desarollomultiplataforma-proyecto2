@@ -1,0 +1,11 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+  - name: personas-service
+    url: http://personas:3000
+    routes:
+      - name: personas-service-routes
+        paths:
+          - /personas
+        strip_path: true
