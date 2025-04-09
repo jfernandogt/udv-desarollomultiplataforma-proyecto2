@@ -2,6 +2,10 @@
 
 Este proyecto contiene múltiples microservicios construidos con Node.js y Express que interactúan con una base de datos PostgreSQL. Cada microservicio es responsable de un dominio específico y expone APIs REST. Los servicios están containerizados con Docker y orquestados usando Docker Compose. Kong se utiliza como gateway de API, configurado a través de la carpeta `kong-config`.
 
+Enlace al PDF del proyecto: https://universidaddavincid-my.sharepoint.com/:b:/g/personal/202102655_estudiante_udv_edu_gt/EazMjhTGbA5KrvfjSQsOFkoByBorIwRbpx-7ASJBurJ58g?e=13OiA0
+
+Enlace al video de explicación: https://drive.google.com/file/d/1tViMDvWbwRfAG7NyMD3dTP4clqbL_1B7/view?usp=sharing
+
 ## Resumen de los Microservicios
 
 1. **areacientifica**
