@@ -6,17 +6,19 @@ services:
     image: postgres
     hostname: postgres
     restart: on-failure
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: toor
       POSTGRES_USER: root
       POSTGRES_DB: main
     healthcheck:
       test: ["CMD", "pg_isready"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
+      interval: 5s
+      timeout: 5s
+      retries: 30
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata_2:/var/lib/postgresql/data
   adminer:
     image: adminer
     restart: always
@@ -42,16 +44,172 @@ services:
       - "8444:8444"
     volumes:
       - ./kong-config:/opt/kong
-  personas-application:
-    hostname: personas
-    build:
-      context: services/personas
-    container_name: personas-application
+    depends_on:
+      db:
+        condition: service_healthy
+  areacientifica:
+    hostname: areacientifica
+    image: areacientifica_service:latest
+    container_name: areacientifica-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
     ports:
       - "3000:3000"
     restart: always
     depends_on:
       db:
         condition: service_healthy
+
+  carrera:
+    hostname: carrera
+    image: carrera_service:latest
+    container_name: carrera-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3001:3001"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  departamento:
+    hostname: departamento
+    image: departamento_service:latest
+    container_name: departamento-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3002:3002"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  facultades:
+    hostname: facultades
+    image: facultades_service:latest
+    container_name: facultades-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3003:3003"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  investigaciones:
+    hostname: investigaciones
+    image: investigaciones_service:latest
+    container_name: investigaciones-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3004:3004"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  investigacionpersona:
+    hostname: investigacionpersona
+    image: investigacionpersona_service:latest
+    container_name: investigacionpersona-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3005:3005"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  municipio:
+    hostname: municipio
+    image: municipio_service:latest
+    container_name: municipio-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3006:3006"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  personaareacientifica:
+    hostname: personaareacientifica
+    image: personaareacientifica_service:latest
+    container_name: personaareacientifica-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3007:3007"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  personafacultad:
+    hostname: personafacultad
+    image: personafacultad_service:latest
+    container_name: personafacultad-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3008:3008"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+  personas:
+    hostname: personas
+    image: personas_service:latest
+    container_name: personas-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3009:3009"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+  titulo:
+    hostname: titulo
+    image: titulo_service:latest
+    container_name: titulo-application
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: toor
+      DB_NAME: main
+    ports:
+      - "3010:3010"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
-  pgdata:
+  pgdata_2:

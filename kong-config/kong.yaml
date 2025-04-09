@@ -2,10 +2,80 @@ _format_version: "2.1"
 _transform: true
 
 services:
+  - name: areacientifica-service
+    url: http://areacientifica:3000
+    routes:
+      - name: areacientifica-service-routes
+        paths:
+          - /areacientifica
+        strip_path: true
+  - name: carrera-service
+    url: http://carrera:3001
+    routes:
+      - name: carrera-service-routes
+        paths:
+          - /carrera
+        strip_path: true
+  - name: departamento-service
+    url: http://departamento:3002
+    routes:
+      - name: departamento-service-routes
+        paths:
+          - /departamento
+        strip_path: true
+  - name: facultades-service
+    url: http://facultades:3003
+    routes:
+      - name: facultades-service-routes
+        paths:
+          - /facultades
+        strip_path: true
+  - name: investigaciones-service
+    url: http://investigaciones:3004
+    routes:
+      - name: investigaciones-service-routes
+        paths:
+          - /investigaciones
+        strip_path: true
+  - name: investigacionpersona-service
+    url: http://investigacionpersona:3005
+    routes:
+      - name: investigacionpersona-service-routes
+        paths:
+          - /investigacionpersona
+        strip_path: true
+  - name: municipio-service
+    url: http://municipio:3006
+    routes:
+      - name: municipio-service-routes
+        paths:
+          - /municipio
+        strip_path: true
+  - name: personaareacientifica-service
+    url: http://personaareacientifica:3007
+    routes:
+      - name: personaareacientifica-service-routes
+        paths:
+          - /personaareacientifica
+        strip_path: true
+  - name: personafacultad-service
+    url: http://personafacultad:3008
+    routes:
+      - name: personafacultad-service-routes
+        paths:
+          - /personafacultad
+        strip_path: true
   - name: personas-service
-    url: http://personas:3000
+    url: http://personas:3009
     routes:
       - name: personas-service-routes
         paths:
           - /personas
+        strip_path: true
+  - name: titulo-service
+    url: http://titulo:3010
+    routes:
+      - name: titulo-service-routes
+        paths:
+          - /titulo
         strip_path: true

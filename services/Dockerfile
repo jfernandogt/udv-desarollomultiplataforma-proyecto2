@@ -1,7 +1,10 @@
-FROM node
+FROM node:22-slim
+
+ARG file=personas.js
+ENV file=${file}
 WORKDIR /app
 COPY package.json /app
 COPY package-lock.json /app
 RUN npm ci
 COPY . /app
-CMD ["node","app.js"]
+CMD ["sh", "-c", "node $file"]
