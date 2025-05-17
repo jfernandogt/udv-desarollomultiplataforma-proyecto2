@@ -1,7 +1,10 @@
 const express = require("express");
 const pgp = require("pg-promise")();
 
+const cors = require("cors");
 const app = express();
+app.use(cors());
+app.use(express.json());
 const db = pgp(
   `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@postgres:5432/${process.env.DB_NAME}`
 );
@@ -44,6 +47,102 @@ app.get("/:id", function (req, res) {
     .catch((error) => {
       console.error("ERROR:", error);
       res.status(500).send("Error retrieving facultad");
+    });
+});
+
+// POST a new facultad
+app.post("/", function (req, res) {
+  // Validate required fields
+  const { nombre } = req.body;
+  if (!nombre) {
+    return res.status(400).send("Nombre is required");
+  }
+
+  const query = `
+    INSERT INTO facultad (nombre, siglas, telefono, correo)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *
+  `;
+
+  const values = [
+    nombre,
+    req.body.siglas || null,
+    req.body.telefono || null,
+    req.body.correo || null,
+  ];
+
+  db.query(query, values)
+    .then((data) => {
+      res.status(201).json(data[0]);
+    })
+    .catch((error) => {
+      console.error("ERROR:", error);
+      res.status(500).send("Error creating facultad");
+    });
+});
+
+// PUT update an existing facultad
+app.put("/:id", function (req, res) {
+  // Validate required fields
+  const { nombre } = req.body;
+  if (!nombre) {
+    return res.status(400).send("Nombre is required");
+  }
+
+  const query = `
+    UPDATE facultad SET
+      nombre = $1,
+      siglas = $2,
+      telefono = $3,
+      correo = $4
+    WHERE facultadid = $5
+    RETURNING *
+  `;
+
+  const values = [
+    nombre,
+    req.body.siglas || null,
+    req.body.telefono || null,
+    req.body.correo || null,
+    req.params.id,
+  ];
+
+  db.query(query, values)
+    .then((data) => {
+      if (data.length === 0) {
+        res.status(404).send("Facultad not found");
+      } else {
+        res.json(data[0]);
+      }
+    })
+    .catch((error) => {
+      console.error("ERROR:", error);
+      res.status(500).send("Error updating facultad");
+    });
+});
+
+// DELETE a facultad by ID
+app.delete("/:id", function (req, res) {
+  const query = `
+    DELETE FROM facultad
+    WHERE facultadid = $1
+    RETURNING *
+  `;
+
+  db.query(query, [req.params.id])
+    .then((data) => {
+      if (data.length === 0) {
+        res.status(404).send("Facultad not found");
+      } else {
+        res.status(200).json({
+          message: "Facultad deleted successfully",
+          deletedFacultad: data[0],
+        });
+      }
+    })
+    .catch((error) => {
+      console.error("ERROR:", error);
+      res.status(500).send("Error deleting facultad");
     });
 });
 
